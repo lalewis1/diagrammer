@@ -1,3 +1,6 @@
 .idea
 .ropeproject
 .venv
+/*.ttl
+/diagram.md
+**/**/__pycache__/
