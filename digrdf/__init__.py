@@ -1,1 +1,1 @@
-from __main__ import create_graph
+from .__main__ import create_graph

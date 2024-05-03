@@ -18,6 +18,14 @@ pip install digrdf
 from the command line
 
 ```bash
+python -m digrdf -i myfiles/
+```
 
+This will create a file called diagram.html in the working directory and open it for viewing.
+
+to see all the cmdline options run
+
+```bash
+python -m digrdf -h
 ```
 
