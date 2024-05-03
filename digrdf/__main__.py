@@ -6,7 +6,7 @@ from subprocess import check_output
 
 from pyvis.network import Network
 
-from prefixes import prefix_map
+from .prefixes import prefix_map
 
 
 def get_label(uri: str) -> str:
