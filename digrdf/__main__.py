@@ -1,6 +1,4 @@
 import argparse
-import re
-from itertools import product
 from pathlib import Path
 from subprocess import check_output
 
@@ -27,18 +25,6 @@ def get_label(uri: str) -> str:
     return label
 
 
-def make_or_get_id(
-    nodes: dict, literals: dict, ids: list, klass: str, isliteral: bool = False
-) -> str:
-    klass_id = nodes.get(klass)
-    if not klass_id:
-        klass_id = re.sub(r"[^A-Z0-9]", "", str(next(ids)))
-        nodes[klass] = klass_id
-    if isliteral:
-        literals.add(klass_id)
-    return klass_id
-
-
 def create_graph(input_path: Path, input_format: str, output_dir: Path, height: str):
     query_path = Path(__file__).parent / "query.sparql"
     if input_path.is_dir():
@@ -52,22 +38,24 @@ def create_graph(input_path: Path, input_format: str, output_dir: Path, height: 
     ] + datastrs
     query_results = check_output(cmd).decode().strip()
     bool_map = {"true": True, "false": False}
-    ids = product("ABCDEFGHIJKLMNOPQSTUVWXYZ", range(1, 10))
-    nodes = dict()
-    literals = set()
-    net = Network(height=height, width="100%", neighborhood_highlight=True)
+    net = Network(
+        height=height,
+        width="100%",
+        neighborhood_highlight=True,
+        directed=True,
+        select_menu=True,
+        filter_menu=True,
+    )
     for line in query_results.splitlines()[1:]:
         row = line.split(",")
         prop_label = get_label(row[0])
         is_literal = True if row[2] == "" else bool_map[row[3]]
         domain_label = get_label(row[1])
-        domain_id = make_or_get_id(nodes, literals, ids, domain_label)
         range_label = get_label(row[2])
-        range_id = make_or_get_id(nodes, literals, ids, range_label, is_literal)
-        net.add_node(domain_id, label=domain_label)
+        net.add_node(domain_label, label=domain_label)
         shape = "box" if is_literal else "dot"
-        net.add_node(range_id, label=range_label, shape=shape)
-        net.add_edge(domain_id, range_id, title=prop_label)
+        net.add_node(range_label, label=range_label, shape=shape)
+        net.add_edge(domain_label, range_label, title=prop_label)
     net.show(str(output_dir / "diagram.html"), notebook=False)
 
 
@@ -109,7 +97,7 @@ if __name__ == "__main__":
         type=int,
         required=False,
         dest="height",
-        default=1000,
+        default=800,
         help="Height of the generated diagram in pixels. defaults to 1000",
     )
     args = parser.parse_args()
