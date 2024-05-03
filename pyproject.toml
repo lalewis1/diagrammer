@@ -1,5 +1,5 @@
 [tool.poetry]
-name = "diagrammer"
+name = "digrdf"
 version = "0.1.0"
 description = "RDF Schema Diagram creation tool"
 authors = ["Lawson Lewis <lawson@kurrawong.ai>"]
@@ -7,7 +7,6 @@ readme = "README.md"
 
 [tool.poetry.dependencies]
 python = "^3.11"
-rdflib = "^7.0.0"
 pyvis = "^0.3.2"
 
 [tool.poetry.group.dev.dependencies]

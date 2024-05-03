@@ -7,13 +7,12 @@ from subprocess import check_output
 
 from pyvis.network import Network
 from prefixes import prefix_map
-from rdflib import URIRef
 
 
 def get_label(uri: str) -> str:
     # handle xsd:text which comes through as ""
     if uri == "":
-        uri = URIRef("http://www.w3.org/2001/XMLSchema#string")
+        uri = "http://www.w3.org/2001/XMLSchema#string"
     if "#" in uri:
         base, term = uri.split("#")
         base += "#"
