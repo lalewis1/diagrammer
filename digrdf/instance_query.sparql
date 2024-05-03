@@ -1,0 +1,5 @@
+select distinct ?p ?s ?o (isliteral(?o) as ?isliteral)
+where {
+    bind(<{}> as ?s)
+    ?s ?p ?o .
+}
