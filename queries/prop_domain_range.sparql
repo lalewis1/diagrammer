@@ -1,0 +1,9 @@
+prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+select distinct ?p (?s_class as ?domain) (if(bound(?o_class), ?o_class, datatype(?o)) as ?range) (isliteral(?o) as ?isliteral)
+where {
+    ?s ?p ?o .
+    ?s rdf:type ?s_class .
+    optional {
+        ?o rdf:type ?o_class .
+    }
+}
