@@ -113,7 +113,7 @@ if __name__ == "__main__":
         type=str,
         required=True,
         dest="input_path",
-        help="File or Directory containing files to be generate a diagram for",
+        help="RDF Input path. Can be HTTP(S) SPARQL endpoint or RDF File or Directory containing RDF files",
     )
     parser.add_argument(
         "-f",
@@ -123,7 +123,7 @@ if __name__ == "__main__":
         required=False,
         dest="format",
         default="ttl",
-        help="Format of input file(s). defaults to ttl, must be a valid rdf format.",
+        help="Format of input file(s). defaults to ttl, must be a valid RDF format.",
     )
     parser.add_argument(
         "-o",
