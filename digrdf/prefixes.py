@@ -13,4 +13,5 @@ prefix_map = {
     "http://www.opengis.net/ont/geosparql#": "geo",
     "http://www.w3.org/ns/dcat#": "dcat",
     "http://www.w3.org/2002/07/owl#": "owl",
+    "http://purl.org/ontology/bibo/": "bibo"
 }

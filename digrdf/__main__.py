@@ -4,6 +4,7 @@ from subprocess import check_output
 from urllib.parse import urlparse
 
 import requests
+import networkx as nx
 from pyvis.network import Network
 
 try:
@@ -40,7 +41,7 @@ def create_graph(
 ):
     schema_query_path = Path(__file__).parent / "schema_query.sparql"
     instance_query_path = Path(__file__).parent / "instance_query.sparql"
-    parsed_input_path = urlparse(input_path)
+    parsed_input_path = urlparse(str(input_path))
     # does it look like a url ?
     if not all([parsed_input_path.scheme, parsed_input_path.netloc]):
         # if not, assume its a local dir/file path
@@ -67,7 +68,7 @@ def create_graph(
             query_str = instance_query_path.read_text().replace("{}", iri)
         else:
             query_str = schema_query_path.read_text()
-        response = requests.get(input_path, headers={"Accept": "text/csv"}, params={"query": query_str})
+        response = requests.get(str(input_path), headers={"Accept": "text/csv"}, params={"query": query_str})
         query_results = response.content.decode()
     bool_map = {"true": True, "false": False}
     net = Network(
@@ -84,10 +85,19 @@ def create_graph(
         is_literal = True if row[2] == "" else bool_map[row[3]]
         domain_label = get_label(row[1])
         range_label = get_label(row[2])
-        net.add_node(domain_label, label=domain_label)
         shape = "box" if is_literal else "dot"
+        net.add_node(domain_label, label=domain_label)
         net.add_node(range_label, label=range_label, shape=shape)
-        net.add_edge(domain_label, range_label, title=prop_label)
+        edges = net.get_edges()
+        duplicate_edge = False
+        for edge in edges:
+            if edge['from'] == domain_label and edge['to'] == range_label:
+                duplicate_edge = True
+                edge['title'] += f"\n{prop_label}"
+                edge['width'] += .2
+        if not duplicate_edge:
+            net.add_edge(domain_label, range_label, title=prop_label, physics=False, width=1)
+    net.set_edge_smooth('cubicBezier')
     if return_json:
         print(net.to_json())
     else:
@@ -150,7 +160,7 @@ if __name__ == "__main__":
         required=False,
         dest="iri",
         default=None,
-        help="IRI of subject to generate a graph for."
+        help="IRI of subject to generate a graph for. Do not include surrounding <> tags."
     )
     args = parser.parse_args()
     input_path = args.input_path
