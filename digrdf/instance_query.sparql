@@ -7,3 +7,4 @@ where {
     filter(isblank(?o))
   }
 }
+# TODO: handle multiple levels of blank nodes

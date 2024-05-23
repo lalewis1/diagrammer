@@ -1,1 +1,1 @@
-from .__main__ import get_graph
+from .core import get_graph

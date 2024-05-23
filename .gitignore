@@ -1,6 +1,7 @@
 .idea
 .ropeproject
 .venv
+.mypy_cache/
 input/
 cache/
 **/**/__pycache__/
