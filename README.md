@@ -21,7 +21,7 @@ pip install digrdf
 from the command line
 
 ```bash
-python -m digrdf -i myfiles/
+python -m digrdf -s myfiles/
 ```
 
 This will create a file called diagram.html in the working directory and open it for viewing.
@@ -29,7 +29,7 @@ This will create a file called diagram.html in the working directory and open it
 You can query any sparql endpoint as well.
 
 ```bash
-python -m digrdf -i "http://myserver.com/sparql"
+python -m digrdf -s "http://myserver.com/sparql"
 ```
 
 This will generate a schema diagram for all triples at that endpoint.
@@ -39,10 +39,10 @@ This will generate a schema diagram for all triples at that endpoint.
 You can also generate an instance level diagram for a particular iri
 
 ```bash
-python -m rdflib -i "http://myserver.com/sparql" -s "http://myserver.com/objects/1234"
+python -m rdflib -s "http://myserver.com/sparql" -i "http://myserver.com/objects/1234"
 ```
 
-where `-s` or `--subject` is a valid iri for an object in the triple store
+where `-i` or `--iri` is a valid iri for an object in the triple store
 
 
 To see all the cmdline options run
