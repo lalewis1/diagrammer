@@ -6,4 +6,5 @@ where {
     optional {
         ?o rdf:type ?o_class .
     }
+    filter(?p != rdf:type)
 }
