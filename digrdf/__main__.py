@@ -84,4 +84,6 @@ if __name__ == "__main__":
     if not digrdf_dir.exists():
         digrdf_dir.mkdir()
 
-    get_graph(source, input_format, output_dir, height, return_json, iri, _cache=_cache)
+    json = get_graph(source, input_format, output_dir, height, return_json, iri, _cache=_cache)
+    if json:
+        print(json)

@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "digrdf"
-version = "0.1.7"
+version = "0.1.8"
 description = "RDF Schema Diagram creation tool"
 authors = ["Lawson Lewis <lawson@kurrawong.ai>"]
 readme = "README.md"
