@@ -7,7 +7,6 @@ from urllib.parse import urlparse
 import requests
 from pyvis.network import Network
 
-
 try:
     from .prefixes import prefix_map
 except ImportError:
@@ -32,7 +31,7 @@ def get_label(uri: str) -> str:
     return label
 
 
-def run_query(source: str, input_format: str, iri: str) -> dict:
+def run_query(source: str, input_format: str, iri: str | None) -> dict:
     schema_query_path = Path(__file__).parent / "schema_query.sparql"
     instance_query_path = Path(__file__).parent / "instance_query.sparql"
     parsed_source = urlparse(str(source))
@@ -64,17 +63,11 @@ def run_query(source: str, input_format: str, iri: str) -> dict:
             os.remove(query_path)
     else:
         # otherwise assume it is a sparql endpoint
-        if not (
-            parsed_source.path.endswith("sparql")
-            or parsed_source.path.endswith("sparql/")
-        ):
-            raise ValueError(
-                f"{source} must be a sparql endpoint ending with 'sparql' or 'sparql/'"
-            )
         if iri:
             query_str = instance_query_path.read_text().replace("{}", iri)
         else:
             query_str = schema_query_path.read_text()
+        # TODO: implement support for basic auth
         response = requests.get(
             str(source),
             headers={"Accept": "application/json"},
@@ -185,7 +178,7 @@ def get_graph(
     iri: str | None = None,
     _cache: bool = False,
 ):
-    _cache_file = Path().home() / "digrdf/results.json"
+    _cache_file = Path().home() / ".digrdf/results.json"
     if _cache and _cache_file.exists():
         query_results = json.loads(_cache_file.read_text())
     else:

@@ -80,7 +80,7 @@ if __name__ == "__main__":
     iri = args.iri
     _cache = args.cache
 
-    digrdf_dir = Path.home() / "digrdf"
+    digrdf_dir = Path.home() / ".digrdf"
     if not digrdf_dir.exists():
         digrdf_dir.mkdir()
 
